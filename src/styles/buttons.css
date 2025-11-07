@@ -1,0 +1,21 @@
+.pk-btn-catch {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #ff1c1c, #b60101);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 15px;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+}
+
+.pk-btn-catch:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,.35);
+}
+
+.pk-btn-catch:active {
+  transform: scale(.97);
+}
