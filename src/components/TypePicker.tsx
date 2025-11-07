@@ -1,5 +1,5 @@
 import { TYPE_ES } from "../utils/typeNames";
-import "./TypePicker.css";
+import "../styles/TypePicker.css";
 
 export const POKEMON_TYPES = [
   "normal",

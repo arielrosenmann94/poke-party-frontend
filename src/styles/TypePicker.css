@@ -5,37 +5,36 @@
 }
 
 .type-chip {
-  padding: 6px 14px;
-  border-radius: 20px;
-  border: 1px solid #333;
-  background: #222;
-  color: #fff;
-  cursor: pointer;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: 0.25s;
-}
-
-.type-chip.selected {
-  background: #ffce30;
-  color: #000;
-  border-color: #fff;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(92, 124, 250, 0.18);
+  border: 1px solid rgba(92, 124, 250, 0.35);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
 }
 
 .type-chip:hover {
-  transform: scale(1.05);
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  box-shadow: 0 0 18px rgba(92, 124, 250, 0.35);
 }
 
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+.type-chip--selected {
+  background: linear-gradient(135deg, rgba(92, 124, 250, 0.4), rgba(140, 92, 255, 0.45));
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(92, 124, 250, 0.5);
 }
 
-.dot-fire { background: #e25822; }
-.dot-water { background: #2f99ff; }
-.dot-grass { background: #3ec65a; }
-.dot-electric { background: #ffdd2d; }
-.dot-dark { background: #3b3b3b; }
+@media (max-width: 520px) {
+  .type-picker {
+    gap: 8px;
+  }
+
+  .type-chip {
+    flex: 1 1 calc(50% - 8px);
+    justify-content: center;
+  }
+}

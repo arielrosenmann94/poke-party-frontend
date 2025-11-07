@@ -1,7 +1,7 @@
 import type { Pokemon } from "../types";
 import StatsList from "./StatsList";
 import { TYPE_ES } from "../utils/typeNames";
-import "./PokemonCard.css";
+import "../styles/PokemonCard.css";
 
 type Action = { label: string; onClick: () => void; disabled?: boolean };
 

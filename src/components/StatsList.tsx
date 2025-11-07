@@ -1,5 +1,5 @@
 import type { Stat } from "../types";
-import "./StatsList.css";
+import "../styles/StatsList.css";
 
 export default function StatsList({ stats }: { stats: Stat[] }) {
   return (
