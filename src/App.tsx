@@ -10,11 +10,12 @@ import {
   getPartySorted,
   optimizeParty,
 } from "./api";
-import { TYPE_ES } from "./utils/typeNames"; 
+import { TYPE_ES } from "./utils/typeNames";
 import type { Pokemon } from "./types";
 import PokemonCard from "./components/PokemonCard";
 import StatsList from "./components/StatsList";
 import TypePicker from "./components/TypePicker";
+import "./styles/App.css";
 
 export default function App() {
   const [msg, setMsg] = useState("");
@@ -53,32 +54,47 @@ export default function App() {
   };
 
   return (
-    <div style={{ padding: 20, fontFamily: "sans-serif" }}>
-      <h1>Poke Party</h1>
-      <p>Backend dice: {msg}</p>
+    <div className="app-shell">
+      <header className="app-header neon-card">
+        <div>
+          <p className="app-tagline">Organiza tu escuadrón futurista</p>
+          <h1 className="app-title">Poké Party</h1>
+        </div>
+        <p className="status-pill">
+          Backend dice: <span>{msg || "…"}</span>
+        </p>
+      </header>
 
-      <div style={{ marginTop: 24 }}>
-        <p style={{ margin: "0 0 8px" }}>Selecciona un tipo:</p>
+      <section className="panel neon-card">
+        <div className="panel-header">
+          <h2>Captura por tipo</h2>
+          <p>Selecciona un tipo para invocar un nuevo Pokémon con estilo futurista.</p>
+        </div>
         <TypePicker
           value={type}
           onPick={(t) => {
             handleGet(t);
           }}
         />
-      </div>
+      </section>
 
       {poke && (
-        <div style={{ marginTop: 20, display: "flex", gap: 16, alignItems: "flex-start" }}>
-          <img src={poke.sprite} alt={poke.name} width={96} height={96} />
-          <div>
-            <h2 style={{ margin: 0, textTransform: "capitalize" }}>{poke.name}</h2>
-            <p style={{ margin: "4px 0" }}>
-              Tipos: {poke.types.map(t => TYPE_ES[t] ?? t).join(", ")}
+        <section className="featured-pokemon neon-card">
+          <div className="featured-pokemon__visual">
+            <img src={poke.sprite} alt={poke.name} width={128} height={128} />
+          </div>
+          <div className="featured-pokemon__body">
+            <div className="featured-pokemon__heading">
+              <h2>{poke.name}</h2>
+              <span className="featured-pokemon__id">#{poke.id}</span>
+            </div>
+            <p className="featured-pokemon__types">
+              Tipos: {poke.types.map((t) => TYPE_ES[t] ?? t).join(", ")}
             </p>
-            <small>ID: {poke.id}</small>
             <StatsList stats={poke.stats} />
-            <div style={{ marginTop: 12 }}>
+            <div className="featured-pokemon__actions">
               <button
+                className="btn btn-primary"
                 onClick={async () => {
                   try {
                     const r = await addToParty(poke!);
@@ -95,88 +111,88 @@ export default function App() {
               </button>
             </div>
           </div>
-        </div>
+        </section>
       )}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 24,
-          marginTop: 32,
-        }}
-      >
-        <section>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <h2 style={{ marginRight: 8 }}>Party (máx 6)</h2>
-            <label style={{ fontSize: 12 }}>
-              Ordenar por{" "}
-              <select value={sortKey} onChange={(e) => setSortKey(e.target.value as any)}>
-                <option value="total">total</option>
-                <option value="hp">hp</option>
-                <option value="attack">attack</option>
-                <option value="defense">defense</option>
-                <option value="special-attack">special-attack</option>
-                <option value="special-defense">special-defense</option>
-                <option value="speed">speed</option>
-              </select>
-            </label>
-            <label style={{ fontSize: 12 }}>
-              Orden{" "}
-              <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value as any)}>
-                <option value="desc">desc</option>
-                <option value="asc">asc</option>
-              </select>
-            </label>
-            <button
-              style={{ marginLeft: "auto" }}
-              onClick={async () => {
-                await optimizeParty();
-                await refresh();
-                alert("🔝 Mejor equipo posible aplicado");
-              }}
-            >
-              ⭐ Mejor equipo posible
-            </button>
-          </div>
-
-          {party.length === 0 && <p>(vacío)</p>}
-          {party.map((p) => (
-            <PokemonCard
-              key={p.id}
-              pokemon={p}
-              rightAction={{
-                label: "⇨ Enviar a Box",
-                onClick: async () => {
-                  await moveToBox(p.id);
+      <div className="collections-grid">
+        <section className="collection-card neon-card">
+          <div className="collection-card__header">
+            <h2>Party (máx 6)</h2>
+            <div className="collection-card__controls">
+              <label>
+                Ordenar por
+                <select value={sortKey} onChange={(e) => setSortKey(e.target.value as any)}>
+                  <option value="total">total</option>
+                  <option value="hp">hp</option>
+                  <option value="attack">attack</option>
+                  <option value="defense">defense</option>
+                  <option value="special-attack">special-attack</option>
+                  <option value="special-defense">special-defense</option>
+                  <option value="speed">speed</option>
+                </select>
+              </label>
+              <label>
+                Orden
+                <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value as any)}>
+                  <option value="desc">desc</option>
+                  <option value="asc">asc</option>
+                </select>
+              </label>
+              <button
+                className="btn btn-secondary"
+                onClick={async () => {
+                  await optimizeParty();
                   await refresh();
-                },
-              }}
-            />
-          ))}
+                  alert("🔝 Mejor equipo posible aplicado");
+                }}
+              >
+                ⭐ Mejor equipo posible
+              </button>
+            </div>
+          </div>
+          <div className="collection-list">
+            {party.length === 0 && <p className="empty-state">(vacío)</p>}
+            {party.map((p) => (
+              <PokemonCard
+                key={p.id}
+                pokemon={p}
+                rightAction={{
+                  label: "⇨ Enviar a Box",
+                  onClick: async () => {
+                    await moveToBox(p.id);
+                    await refresh();
+                  },
+                }}
+              />
+            ))}
+          </div>
         </section>
 
-        <section>
-          <h2>Box</h2>
-          {box.length === 0 && <p>(vacío)</p>}
-          {box.map((p) => (
-            <PokemonCard
-              key={p.id}
-              pokemon={p}
-              rightAction={{
-                label: "⇦ Volver a Party",
-                disabled: party.length >= 6,
-                onClick: async () => {
-                  try {
-                    await moveToParty(p.id);
-                    await refresh();
-                  } catch (e: any) {
-                    alert("❌ " + (e?.response?.data?.error || "Error"));
-                  }
-                },
-              }}
-            />
-          ))}
+        <section className="collection-card neon-card">
+          <div className="collection-card__header">
+            <h2>Box</h2>
+          </div>
+          <div className="collection-list">
+            {box.length === 0 && <p className="empty-state">(vacío)</p>}
+            {box.map((p) => (
+              <PokemonCard
+                key={p.id}
+                pokemon={p}
+                rightAction={{
+                  label: "⇦ Volver a Party",
+                  disabled: party.length >= 6,
+                  onClick: async () => {
+                    try {
+                      await moveToParty(p.id);
+                      await refresh();
+                    } catch (e: any) {
+                      alert("❌ " + (e?.response?.data?.error || "Error"));
+                    }
+                  },
+                }}
+              />
+            ))}
+          </div>
         </section>
       </div>
     </div>
